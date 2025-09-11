@@ -1,0 +1,71 @@
+name: YouTube Subscriptions Daily Fetch
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "0 4 * * *"  # 每天 04:00 UTC == 北京时间 12:00
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  TZ: Asia/Shanghai       # 日志与输出文件都按北京时间
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies (cached)
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+
+      - name: Pip install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore OAuth credentials from Secrets
+        run: |
+          printf '%s' "$YOUTUBE_CLIENT_SECRET_JSON" > client_secret.json
+          printf '%s' "$YOUTUBE_TOKEN_JSON" > token.json
+        env:
+          YOUTUBE_CLIENT_SECRET_JSON: ${{ secrets.YOUTUBE_CLIENT_SECRET_JSON }}
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
+
+      - name: Run fetch script
+        run: |
+          python youtube_subs_daily.py --pages 5
+
+      - name: Commit CSV & state back to repo
+        run: |
+          git config user.name "gha-bot"
+          git config user.email "gha-bot@users.noreply.github.com"
+          git add outputs/*.csv state.json || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(youtube): daily fetch at $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            git push
+          else
+            echo "No changes to commit."
+          fi
+
+      - name: Upload outputs as artifact (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: youtube-updates-${{ github.run_id }}
+          path: |
+            outputs/*.csv
+            run.log
+          if-no-files-found: ignore
