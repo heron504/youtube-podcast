@@ -68,15 +68,16 @@ def call_openrouter(messages: List[Dict[str, str]], temperature: float = 0.15, m
 
 # ====== 你的极简提示词：URL + 指令（不强制结构）======
 def build_messages(url: str) -> List[Dict[str, str]]:
-    # 系统提示只约束中文与不要代码围栏；不要求 JSON，不限格式
     system = (
-        "只用中文回答。不要使用 Markdown 代码围栏(```)，直接输出正文。"
-        "任务：总结该 YouTube 视频的内容要点，详细一点，结构化，不要删减重要信息。"
-        "允许使用小标题与项目符号列表，优先保留关键信息（议题、观点、证据/数据、主体/公司、人名、时间线、影响、风险、行动项）。"
+        "只用中文回答。不要使用 Markdown 代码围栏(```)。"
+        "不要写任何前导话术，如“好的/以下是/这是对…的总结”。直接进入内容。"
+        "任务：总结该 YouTube 视频的内容要点，详细、结构化（允许小标题与列表），不要删减重要信息。"
         "若无法直接读取链接内容，则基于标题/简介/常识稳健概括，禁止编造具体数字。"
     )
     user = f"{url}\n请你总结内容要点，详细一点，结构化，不要删减重要信息，用中文。"
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
+
+
 
 # ====== 输出清洗：去掉 ``` 包裹，保留完整文本 ======
 def strip_code_fences(text: str) -> str:
@@ -103,45 +104,25 @@ def make_snippet(full_text: str, limit: int = 40) -> str:
     return ""
 
 # ====== 将自由文本转成简洁 HTML（保留全部内容）======
-def text_to_html(text: str) -> str:
-    # 先整体转义，防止注入
-    esc = html.escape(text)
-    lines = esc.splitlines()
+def text_to_html_md(text: str) -> str:
+    """把自由文本按 Markdown 渲染，并做最小安全清洗（适配邮件）。"""
+    # 先用 Python-Markdown 渲染（支持 ### 标题、列表、粗体等）
+    html_raw = markdown.markdown(
+        text,
+        extensions=["extra", "sane_lists"]
+    )
+    # 再用 bleach 白名单清洗，避免奇怪标签破坏邮件
+    allowed_tags = [
+        "p","ul","ol","li","strong","em","b","i",
+        "h1","h2","h3","h4","h5","h6",
+        "blockquote","code","pre","hr","br","a"
+    ]
+    allowed_attrs = {"a": ["href","title","rel","target"]}
+    cleaned = bleach.clean(html_raw, tags=allowed_tags, attributes=allowed_attrs, strip=True)
+    # 给所有 <a> 加 target/rel
+    cleaned = re.sub(r'<a(?![^>]*\btarget=)', r'<a target="_blank" rel="noopener"', cleaned)
+    return cleaned
 
-    html_chunks: List[str] = []
-    in_ul = False
-
-    def flush_ul():
-        nonlocal in_ul
-        if in_ul:
-            html_chunks.append("</ul>")
-            in_ul = False
-
-    for raw in lines:
-        ln = raw.strip()
-        if not ln:
-            flush_ul()
-            html_chunks.append("<p style=\"margin:8px 0;\"></p>")
-            continue
-
-        # 列表项（- * • · 开头）
-        if re.match(r"^(&#45;|&#42;|•|·)\s+", ln):
-            if not in_ul:
-                html_chunks.append("<ul style=\"padding-left:20px; margin:6px 0;\">")
-                in_ul = True
-            # 去掉转义后的符号（- -> &#45;  * -> &#42;）
-            li = re.sub(r"^(&#45;|&#42;|•|·)\s+", "", ln)
-            html_chunks.append(f"<li style=\"margin:4px 0;\">{li}</li>")
-        else:
-            flush_ul()
-            # 简单把“结尾是全角冒号/冒号”的行当作小标题加粗
-            if ln.endswith("：") or ln.endswith(":"):
-                html_chunks.append(f"<p style=\"margin:8px 0; font-weight:600;\">{ln}</p>")
-            else:
-                html_chunks.append(f"<p style=\"margin:8px 0;\">{ln}</p>")
-
-    flush_ul()
-    return "\n".join(html_chunks)
 
 # ====== 渲染邮件 HTML ======
 def render_html(items: List[Dict[str, Any]], date_str: str) -> str:
@@ -234,7 +215,7 @@ def main():
         # 去掉 ``` 包裹，保留完整文本
         cleaned = strip_code_fences(raw)
         snippet = make_snippet(cleaned, limit=40)
-        summary_html = text_to_html(cleaned)
+        summary_html = text_to_html_md(cleaned)
 
         items.append({
             "video_id": r.get("video_id",""),
