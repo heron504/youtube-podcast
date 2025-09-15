@@ -70,15 +70,23 @@ def call_openrouter(messages: List[Dict[str, str]], temperature: float = 0.15, m
     return data["choices"][0]["message"]["content"].strip()
 
 # ====== 你的极简提示词：URL + 指令（不强制结构）======
-def build_messages(url: str) -> List[Dict[str, str]]:
+def build_messages(url: str, title: str, channel: str, description: str) -> List[Dict[str, str]]:
     system = (
-        "只用中文回答。不要使用 Markdown 代码围栏(```)。"
-        "不要写任何前导话术，如“好的/以下是/这是对…的总结”。直接进入内容。"
-        "任务：总结该 YouTube 视频的内容要点，详细、结构化（允许小标题与列表），不要删减重要信息。"
-        "若无法直接读取链接内容，则基于标题/简介/常识稳健概括，禁止编造具体数字。"
+        "只用中文回答。不要使用 Markdown 代码围栏(```)。不得写任何开场白（如“好的/以下是/这是…”）。"
+        "必须仅基于“该链接视频”的实际内容进行总结；"
+        "若无法直接读取该链接，请在第一行输出：[无法读取链接]，随后仅基于标题+简介做稳健概括，并显式标注“（基于标题+简介）”，禁止编造具体数字或未出现的结论。"
+        "允许使用小标题与项目列表，信息要完整、结构化、详细。"
     )
-    user = f"{url}\n请你总结内容要点，详细一点，结构化，不要删减重要信息，用中文。"
+    # 仍然坚持你的极简用户指令，但提供上下文以防模型跑偏
+    user = (
+        f"{url}\n"
+        f"标题：{title}\n"
+        f"频道：{channel}\n"
+        f"简介（可为空）：{(description or '')[:1200]}\n\n"
+        "请你总结内容要点，详细一点，结构化，不要删减重要信息，用中文。"
+    )
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
+
 
 
 
