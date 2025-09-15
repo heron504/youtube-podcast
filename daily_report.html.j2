@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{ date }} · YouTube 播客日报</title>
+<style>
+  :root{--fg:#111;--muted:#666;--bg:#fff;--card:#fafafa;--accent:#0b57d0;}
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans SC","PingFang SC",sans-serif;margin:0;background:var(--bg);color:var(--fg);line-height:1.6;}
+  header{padding:20px 16px;background:#fff;position:sticky;top:0;border-bottom:1px solid #eee;z-index:10}
+  h1{margin:0;font-size:20px}
+  .summary{padding:16px;background:var(--card);border-radius:12px;margin:16px}
+  .toc{padding:16px;margin:16px;border:1px solid #eee;border-radius:12px;background:#fff}
+  .toc a{color:var(--accent);text-decoration:none}
+  section.article{margin:16px;padding:16px;background:#fff;border:1px solid #eee;border-radius:12px}
+  section.article h2{margin-top:0;font-size:18px}
+  .meta{color:var(--muted);font-size:13px;margin-bottom:8px}
+  .bullet li{margin-bottom:4px}
+  .chip{display:inline-block;padding:2px 8px;border-radius:999px;background:#eef3fe;color:#1a73e8;font-size:12px;margin-right:6px}
+  .footer{color:#999;font-size:12px;text-align:center;padding:24px}
+  .wrap{max-width:860px;margin:0 auto}
+</style>
+</head>
+<body>
+  <header><div class="wrap">
+    <h1>{{ date }} · YouTube 播客日报</h1>
+  </div></header>
+
+  <main class="wrap">
+    <div class="summary">
+      <div class="chip">今日摘要</div>
+      <p>共 {{ items|length }} 条更新。</p>
+      <ol>
+        {% for it in items %}
+          <li><strong>{{ it.channel_title }}</strong> · <a href="#{{ it.video_id }}">{{ it.title }}</a>：{{ it.one_line_summary }}</li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="toc">
+      <div class="chip">目录</div>
+      <ol>
+        {% for it in items %}
+          <li><a href="#{{ it.video_id }}">{{ it.channel_title }} — {{ it.title }}</a></li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    {% for it in items %}
+    <section class="article" id="{{ it.video_id }}">
+      <h2>{{ it.title }}</h2>
+      <div class="meta">
+        <span>{{ it.channel_title }}</span> ·
+        <span>{{ it.published_local }}</span> ·
+        <a href="{{ it.url }}" target="_blank" rel="noopener">观看视频</a>
+      </div>
+      {% if it.key_points and it.key_points|length>0 %}
+        <ul class="bullet">
+          {% for p in it.key_points %}
+            <li>{{ p }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="meta">暂无要点。</p>
+      {% endif %}
+    </section>
+    {% endfor %}
+
+    <div class="footer">自动生成 · 模型：Gemini 2.5 Pro（OpenRouter）</div>
+  </main>
+</body>
+</html>
