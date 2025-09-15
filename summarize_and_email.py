@@ -10,6 +10,9 @@ import requests
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import markdown  # 新增
+import bleach    # 新增
+
 
 BASE_DIR = Path(__file__).resolve().parent
 OUT_DIR = BASE_DIR / "outputs"
