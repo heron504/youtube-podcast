@@ -1,73 +1,87 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
 <title>{{ date }} · YouTube 播客日报</title>
 <style>
-  :root{--fg:#111;--muted:#666;--bg:#fff;--card:#fafafa;--accent:#0b57d0;}
-  *{box-sizing:border-box}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans SC","PingFang SC",sans-serif;margin:0;background:var(--bg);color:var(--fg);line-height:1.6;}
-  header{padding:20px 16px;background:#fff;position:sticky;top:0;border-bottom:1px solid #eee;z-index:10}
-  h1{margin:0;font-size:20px}
-  .summary{padding:16px;background:var(--card);border-radius:12px;margin:16px}
-  .toc{padding:16px;margin:16px;border:1px solid #eee;border-radius:12px;background:#fff}
-  .toc a{color:var(--accent);text-decoration:none}
-  section.article{margin:16px;padding:16px;background:#fff;border:1px solid #eee;border-radius:12px}
-  section.article h2{margin-top:0;font-size:18px}
-  .meta{color:var(--muted);font-size:13px;margin-bottom:8px}
-  .bullet li{margin-bottom:4px}
-  .chip{display:inline-block;padding:2px 8px;border-radius:999px;background:#eef3fe;color:#1a73e8;font-size:12px;margin-right:6px}
-  .footer{color:#999;font-size:12px;text-align:center;padding:24px}
-  .wrap{max-width:860px;margin:0 auto}
+@media (prefers-color-scheme: dark) {
+  body { background:#000 !important; color:#eaeaea !important; }
+  a { color:#9ecaff !important; }
+}
 </style>
 </head>
-<body>
-  <header><div class="wrap">
-    <h1>{{ date }} · YouTube 播客日报</h1>
-  </div></header>
+<body style="margin:0; padding:0; background:#ffffff; color:#111111;">
+  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%; background:#ffffff;">
+    <tr>
+      <td align="center" style="padding:0;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:680px; width:100%; margin:0 auto;">
 
-  <main class="wrap">
-    <div class="summary">
-      <div class="chip">今日摘要</div>
-      <p>共 {{ items|length }} 条更新。</p>
-      <ol>
-        {% for it in items %}
-          <li><strong>{{ it.channel_title }}</strong> · <a href="#{{ it.video_id }}">{{ it.title }}</a>：{{ it.one_line_summary }}</li>
-        {% endfor %}
-      </ol>
-    </div>
+          <!-- 头部 -->
+          <tr>
+            <td style="padding:16px 16px 8px 16px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif; font-size:20px; line-height:1.4; font-weight:700; border-bottom:1px solid #eee;">
+              {{ date }} · YouTube 播客日报
+            </td>
+          </tr>
 
-    <div class="toc">
-      <div class="chip">目录</div>
-      <ol>
-        {% for it in items %}
-          <li><a href="#{{ it.video_id }}">{{ it.channel_title }} — {{ it.title }}</a></li>
-        {% endfor %}
-      </ol>
-    </div>
+          <!-- 今日摘要：每条一句话 + 链接（无目录） -->
+          <tr>
+            <td style="padding:12px 16px 0 16px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f7f7f7; border-radius:12px;">
+                <tr>
+                  <td style="padding:12px 14px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif; font-size:14px; line-height:1.6;">
+                    <span style="display:inline-block; padding:2px 8px; border-radius:999px; background:#eef3fe; color:#1a73e8; font-size:12px; margin-right:6px;">今日摘要</span>
+                    共 {{ items|length }} 条更新。
+                    <ol style="padding-left:20px; margin:8px 0 0 0;">
+                      {% for it in items %}
+                        <li style="margin:4px 0;">
+                          <strong>{{ it.channel_title }}</strong> ·
+                          <a href="{{ it.url }}" style="color:#0b57d0; text-decoration:none;" target="_blank" rel="noopener">{{ it.title }}</a>
+                          {% if it.snippet %}：{{ it.snippet }}{% endif %}
+                        </li>
+                      {% endfor %}
+                    </ol>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
 
-    {% for it in items %}
-    <section class="article" id="{{ it.video_id }}">
-      <h2>{{ it.title }}</h2>
-      <div class="meta">
-        <span>{{ it.channel_title }}</span> ·
-        <span>{{ it.published_local }}</span> ·
-        <a href="{{ it.url }}" target="_blank" rel="noopener">观看视频</a>
-      </div>
-      {% if it.key_points and it.key_points|length>0 %}
-        <ul class="bullet">
-          {% for p in it.key_points %}
-            <li>{{ p }}</li>
+          <!-- 详细正文：完整保留模型输出（已转成简洁HTML） -->
+          {% for it in items %}
+          <tr>
+            <td style="padding:12px 16px 0 16px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #eee; border-radius:12px;">
+                <tr>
+                  <td style="padding:12px 14px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif;">
+                    <div style="font-size:18px; font-weight:700; line-height:1.4; margin:0 0 6px 0;">{{ it.title }}</div>
+                    <div style="color:#666; font-size:13px; margin:0 0 8px 0;">
+                      {{ it.channel_title }} · {{ it.published_local }} ·
+                      <a href="{{ it.url }}" style="color:#0b57d0; text-decoration:none;" target="_blank" rel="noopener">观看视频</a>
+                    </div>
+                    <div style="font-size:15px; line-height:1.6;">
+                      {{ it.summary_html | safe }}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
           {% endfor %}
-        </ul>
-      {% else %}
-        <p class="meta">暂无要点。</p>
-      {% endif %}
-    </section>
-    {% endfor %}
 
-    <div class="footer">自动生成 · 模型：Gemini 2.5 Pro（OpenRouter）</div>
-  </main>
+          <!-- 底部 -->
+          <tr>
+            <td style="padding:20px 16px 32px 16px; color:#999; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif; font-size:12px; text-align:center;">
+              自动生成 · 模型：Gemini 2.5 Pro（OpenRouter）
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
