@@ -8,7 +8,7 @@ from dateutil import tz
 from typing import List, Dict, Any
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
+import re, json
 
 import requests
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -56,7 +56,7 @@ def post_with_retries(url: str, headers: Dict[str, str], payload: Dict[str, Any]
         resp.raise_for_status()
         return resp
 
-def call_openrouter(messages: List[Dict[str, str]], temperature: float = 0.2, max_tokens: int = 1200) -> str:
+def call_openrouter(messages: List[Dict[str, str]], temperature: float = 0.2, max_tokens: int = 10000) -> str:
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json",
@@ -76,36 +76,63 @@ def call_openrouter(messages: List[Dict[str, str]], temperature: float = 0.2, ma
 
 def build_messages(title: str, url: str, channel: str, description: str) -> List[Dict[str, str]]:
     system = (
-        "你是面向投资研究的长视频/播客摘要助手。目标：在中文里以结构化要点输出，"
-        "尽可能完整覆盖关键信息（议题、核心观点、证据/数据、参与方/人名/公司、时间线与进展、结论/影响、风险/不确定性、行动项），"
-        "避免空话与水分；若无法直接读取视频内容，则基于可得信息稳健概括，严禁编造具体数据或不存在的结论。"
-        "输出必须是 JSON：{\"one_line\": \"(可留空，<=20字)\", \"points\": [\"要点1(<=120字)\", ...，6-12条]}。"
-        "当信息较多时，优先保证要点完整性，one_line 可留空。每条要点应包含“主结论 + 关键依据/数字/引用/时间/主体"
+        "你是面向投资研究的长视频/播客摘要助手。请直接阅读提供的 YouTube 链接内容；"
+        "若无法直接访问，则基于可得信息（标题/频道/简介/常识）做稳健概括。"
+        "目标：用中文、结构化要点，尽可能完整覆盖关键信息——议题、核心观点、证据/数据、涉及主体/公司、人名、时间线与进展、结论/影响、风险/不确定性、后续行动。"
+        "避免空话和水分，严禁编造未出现的具体数据或结论。"
+        "严格输出：不允许出现任何解释文字、Markdown代码块或前后缀，不允许 ``` 符号。"
+        "只返回一行紧凑 JSON："
+        "{\"one_line\":\"(可留空，<=20字)\",\"points\":[\"要点1：主结论+依据/数字/时间/主体(<=120字)\",...最多12条]}"
     )
     user = (
         f"视频标题：{title}\n"
         f"频道：{channel}\n"
         f"URL：{url}\n"
         f"简介（可为空）：{(description or '')[:800]}\n\n"
-        "任务：\n"
-        "1) 给出一句话摘要（<=40字，中文）。\n"
-        "2) 提炼3-8条要点（每条<=40字，中文）。\n"
-        "3) 仅返回 JSON，不要附加说明。"
+        "请只返回上一段格式的一行 JSON。"
     )
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
+
 def parse_json_or_fallback(text: str) -> Dict[str, Any]:
+    s = text.strip()
+
+    # 1) 去掉 Markdown 代码块外壳（```json ... ``` 或 ``` ... ```）
+    if s.startswith("```"):
+        # 抓取三引号包裹内容
+        m = re.search(r"```(?:json|JSON)?\s*(.*?)\s*```", s, flags=re.S)
+        if m:
+            s = m.group(1).strip()
+
+    # 2) 提取最外层 {...} 片段（有些模型前后仍会加提示语）
+    if "{" in s and "}" in s:
+        start = s.find("{")
+        end = s.rfind("}")
+        s = s[start:end+1].strip()
+
+    # 3) 去掉可能的尾逗号（JSON 容易因行尾逗号报错）
+    s = re.sub(r",\s*([\]}])", r"\1", s)
+
+    # 4) 正常 JSON 解析
     try:
-        obj = json.loads(text)
-        one = (obj.get("one_line") or "").strip()
-        pts = [p.strip() for p in obj.get("points", []) if isinstance(p, str) and p.strip()]
-        return {"one_line": one[:60], "points": pts[:8]}
+        obj = json.loads(s)
+        one = (obj.get("one_line") or "").strip()[:60]
+        pts_raw = obj.get("points", [])
+        if isinstance(pts_raw, str):
+            # 若误返回成字符串，按换行/分号/顿号拆分
+            pts = [p.strip() for p in re.split(r"[\n；;、]", pts_raw) if p.strip()]
+        else:
+            pts = [str(p).strip() for p in pts_raw if str(p).strip()]
+        # 过滤掉像 "one_line": 这种误混入的键行
+        pts = [p for p in pts if not p.startswith('"one_line"') and not p.startswith("{") and not p.startswith("}")]
+        return {"one_line": one, "points": pts[:12]}
     except Exception:
-        # 模型未按 JSON 返回时，做个保底拆行
-        lines = [ln.strip(" \t-•·") for ln in text.splitlines() if ln.strip()]
+        # 5) 兜底：把文本按行拆成“首行=摘要、余下=要点”
+        lines = [ln.strip(" \t-•·") for ln in s.splitlines() if ln.strip()]
         one = lines[0][:60] if lines else "（解析失败）"
-        pts = [ln[:80] for ln in lines[1:9]]
+        pts = [ln[:120] for ln in lines[1:13]]
         return {"one_line": one, "points": pts}
+
 
 def render_html(items: List[Dict[str, Any]], date_str: str) -> str:
     env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)), autoescape=select_autoescape(["html", "xml"]))
