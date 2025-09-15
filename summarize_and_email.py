@@ -6,6 +6,9 @@ from pathlib import Path
 from datetime import datetime
 from dateutil import tz
 from typing import List, Dict, Any
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 
 import requests
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -109,19 +112,47 @@ def render_html(items: List[Dict[str, Any]], date_str: str) -> str:
     return tpl.render(date=date_str, items=items)
 
 def send_email_html(subject: str, html: str):
-    assert SMTP_SERVER and SMTP_USERNAME and SMTP_PASSWORD and MAIL_FROM, "SMTP 环境变量未配置完整"
-    msg = (
-        f"From: {MAIL_FROM}\r\n"
-        f"To: {MAIL_TO}\r\n"
-        f"Subject: {subject}\r\n"
-        "MIME-Version: 1.0\r\n"
-        "Content-Type: text/html; charset=utf-8\r\n\r\n"
-        f"{html}"
-    )
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, context=context) as server:
+    assert SMTP_SERVER and SMTP_USERNAME and SMTP_PASSWORD, "SMTP 环境变量未配置完整"
+    from_addr = MAIL_FROM or SMTP_USERNAME
+    to_addrs = [addr.strip() for addr in (MAIL_TO or SMTP_USERNAME).split(",") if addr.strip()]
+
+    # 构造 MIME 邮件
+    msg = MIMEMultipart("alternative")
+    msg["From"] = from_addr
+    msg["To"] = ", ".join(to_addrs)
+    msg["Subject"] = subject
+    msg.attach(MIMEText(html, "html", "utf-8"))
+
+    server = None
+    try:
+        if int(SMTP_PORT) == 465:
+            # SSL 直连
+            context = ssl.create_default_context()
+            server = smtplib.SMTP_SSL(SMTP_SERVER, int(SMTP_PORT), timeout=60, context=context)
+            server.ehlo()
+        else:
+            # 587等端口：明文握手后 STARTTLS
+            server = smtplib.SMTP(SMTP_SERVER, int(SMTP_PORT), timeout=60)
+            server.ehlo()
+            context = ssl.create_default_context()
+            server.starttls(context=context)
+            server.ehlo()
+
         server.login(SMTP_USERNAME, SMTP_PASSWORD)
-        server.sendmail(MAIL_FROM, [MAIL_TO], msg.encode("utf-8"))
+        server.sendmail(from_addr, to_addrs, msg.as_string())
+
+        # 有些服务商在 QUIT 时直接掐连接；忽略退出异常避免 -1,b'\x00\x00\x00'
+        try:
+            server.quit()
+        except Exception:
+            pass
+    finally:
+        try:
+            if server:
+                server.close()
+        except Exception:
+            pass
+
 
 def main():
     assert OPENROUTER_API_KEY, "OPENROUTER_API_KEY 未配置"
