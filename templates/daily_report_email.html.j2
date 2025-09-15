@@ -2,49 +2,41 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="x-apple-disable-message-reformatting">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="light dark">
-<meta name="supported-color-schemes" content="light dark">
 <title>{{ date }} · YouTube 播客日报</title>
-<style>
-/* 高对比度；暗色模式适配 */
-:root { color-scheme: light dark; }
-@media (prefers-color-scheme: dark) {
-  body { background:#000 !important; color:#eaeaea !important; }
-  a { color:#9ecaff !important; }
-}
-h1,h2,h3,h4,h5 { margin: 12px 0 6px 0; }
-</style>
-
+<!-- 不使用 color-scheme / 深色媒体查询，避免客户端“智能变灰” -->
 </head>
-<body style="margin:0; padding:0; background:#ffffff; color:#202124;">
+<body style="margin:0; padding:0; background:#ffffff; color:#121212;">
+  <!-- 全宽容器 -->
   <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%; background:#ffffff;">
     <tr>
       <td align="center" style="padding:0;">
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="max-width:680px; width:100%; margin:0 auto;">
+
+        <!-- 中心内容容器（纯表格布局 + 全内联样式） -->
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="width:100%; max-width:720px; margin:0 auto;">
 
           <!-- 头部 -->
           <tr>
-            <td style="padding:16px 16px 8px 16px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif; font-size:20px; line-height:1.4; font-weight:700; border-bottom:1px solid #eee;">
+            <td style="padding:18px 16px 10px 16px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif; font-size:22px; line-height:1.35; font-weight:700; color:#121212; border-bottom:1px solid #dcdcdc;">
               {{ date }} · YouTube 播客日报
             </td>
           </tr>
 
-          <!-- 今日摘要：每条一句话 + 链接（无目录） -->
+          <!-- 今日摘要（无目录；每条带外链） -->
           <tr>
             <td style="padding:12px 16px 0 16px;">
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#f7f7f7; border-radius:12px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #dcdcdc; border-radius:12px; background:#ffffff;">
                 <tr>
-                  <td style="padding:12px 14px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif; font-size:14px; line-height:1.6;">
-                    <span style="display:inline-block; padding:2px 8px; border-radius:999px; background:#eef3fe; color:#1a73e8; font-size:12px; margin-right:6px;">今日摘要</span>
-                    共 {{ items|length }} 条更新。
-                    <ol style="padding-left:20px; margin:8px 0 0 0;">
+                  <td style="padding:12px 14px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif; font-size:15px; line-height:1.65; color:#121212;">
+                    <div style="font-weight:600; font-size:13px; color:#121212; margin:0 0 6px 0;">今日摘要 · 共 {{ items|length }} 条</div>
+                    <ol style="padding-left:20px; margin:8px 0 0 0; color:#121212;">
                       {% for it in items %}
-                        <li style="margin:4px 0;">
-                          <strong>{{ it.channel_title }}</strong> ·
-                          <a href="{{ it.url }}" style="color:#0b57d0; text-decoration:none;" target="_blank" rel="noopener">{{ it.title }}</a>
-                          {% if it.snippet %}：{{ it.snippet }}{% endif %}
+                        <li style="margin:6px 0; color:#121212;">
+                          <strong style="color:#121212;">{{ it.channel_title }}</strong>
+                          <span style="color:#121212;"> · </span>
+                          <a href="{{ it.url }}" style="color:#0a58ca; text-decoration:none;" target="_blank" rel="noopener">{{ it.title }}</a>
+                          {% if it.snippet %}<span style="color:#121212;">：{{ it.snippet }}</span>{% endif %}
                         </li>
                       {% endfor %}
                     </ol>
@@ -54,19 +46,24 @@ h1,h2,h3,h4,h5 { margin: 12px 0 6px 0; }
             </td>
           </tr>
 
-          <!-- 详细正文：完整保留模型输出（已转成简洁HTML） -->
+          <!-- 逐条正文（保留模型输出，已转成简洁HTML） -->
           {% for it in items %}
           <tr>
             <td style="padding:12px 16px 0 16px;">
-              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #eee; border-radius:12px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="border:1px solid #dcdcdc; border-radius:12px; background:#ffffff;">
                 <tr>
-                  <td style="padding:12px 14px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif;">
-                    <div style="font-size:18px; font-weight:700; line-height:1.4; margin:0 0 6px 0;">{{ it.title }}</div>
-                    <div style="color:#5f6368; font-size:13px; margin:0 0 8px 0;">
-                      {{ it.channel_title }} · {{ it.published_local }} ·
-                      <a href="{{ it.url }}" style="color:#0b57d0; text-decoration:none;" target="_blank" rel="noopener">观看视频</a>
+                  <td style="padding:14px 14px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif;">
+                    <div style="font-size:18px; font-weight:700; line-height:1.4; color:#121212; margin:0 0 6px 0;">
+                      {{ it.title }}
                     </div>
-                    <div style="font-size:15px; line-height:1.6;">
+                    <div style="color:#333333; font-size:13px; line-height:1.4; margin:0 0 10px 0;">
+                      {{ it.channel_title }} · {{ it.published_local }} ·
+                      <a href="{{ it.url }}" style="color:#0a58ca; text-decoration:none;" target="_blank" rel="noopener">观看视频</a>
+                    </div>
+
+                    <!-- 正文：把 Markdown 渲染后的 HTML 放进来；再次以内联颜色确保不被变灰 -->
+                    <div style="font-size:16px; line-height:1.7; color:#121212;">
+                      <!-- 标题/列表等子元素会继承 #121212 -->
                       {{ it.summary_html | safe }}
                     </div>
                   </td>
@@ -78,7 +75,7 @@ h1,h2,h3,h4,h5 { margin: 12px 0 6px 0; }
 
           <!-- 底部 -->
           <tr>
-            <td style="padding:20px 16px 32px 16px; color:#999; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif; font-size:12px; text-align:center;">
+            <td style="padding:20px 16px 28px 16px; text-align:center; font-size:12px; color:#6b7280; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans SC','PingFang SC',sans-serif;">
               自动生成 · 模型：Gemini 2.5 Pro（OpenRouter）
             </td>
           </tr>
@@ -89,4 +86,3 @@ h1,h2,h3,h4,h5 { margin: 12px 0 6px 0; }
   </table>
 </body>
 </html>
-
