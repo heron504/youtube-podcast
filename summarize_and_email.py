@@ -1,36 +1,34 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os, csv, json, smtplib, ssl, time
+import os, csv, smtplib, ssl, time, re, html
 from pathlib import Path
 from datetime import datetime
 from dateutil import tz
 from typing import List, Dict, Any
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-import re, json
-
 import requests
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 BASE_DIR = Path(__file__).resolve().parent
 OUT_DIR = BASE_DIR / "outputs"
 TEMPLATE_DIR = BASE_DIR / "templates"
-TEMPLATE_FILE = "daily_report.html.j2"
+TEMPLATE_FILE = "daily_report_email.html.j2"   # 邮件友好模板（无目录）
 
-# ==== 环境变量/Secrets ====
+# ==== Secrets / 环境变量 ====
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
 SMTP_SERVER = os.environ.get("SMTP_SERVER", "")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
 SMTP_USERNAME = os.environ.get("SMTP_USERNAME", "")
 SMTP_PASSWORD = os.environ.get("SMTP_PASSWORD", "")
 MAIL_FROM = os.environ.get("MAIL_FROM", "")
-MAIL_TO = os.environ.get("MAIL_TO", "heron259@qq.com")  # 收件人
+MAIL_TO = os.environ.get("MAIL_TO", "heron259@qq.com")   # 收件人
 
 MODEL = "google/gemini-2.5-pro"
 OPENROUTER_BASE = "https://openrouter.ai/api/v1"
 
-# ==== 工具 ====
+# ==== 小工具 ====
 def today_date_str_tz(tz_str="Asia/Shanghai") -> str:
     tzinfo = tz.gettz(tz_str)
     return datetime.now(tzinfo).strftime("%Y-%m-%d")
@@ -45,8 +43,7 @@ def load_today_updates() -> List[Dict[str, str]]:
 def post_with_retries(url: str, headers: Dict[str, str], payload: Dict[str, Any], tries: int = 5, timeout: int = 120):
     backoff = 2
     for i in range(tries):
-        resp = requests.post(url, headers=headers, data=json.dumps(payload), timeout=timeout)
-        # 对速率/网关错误做退避
+        resp = requests.post(url, headers=headers, json=payload, timeout=timeout)
         if resp.status_code in (429, 500, 502, 503, 504):
             if i == tries - 1:
                 resp.raise_for_status()
@@ -56,110 +53,132 @@ def post_with_retries(url: str, headers: Dict[str, str], payload: Dict[str, Any]
         resp.raise_for_status()
         return resp
 
-def call_openrouter(messages: List[Dict[str, str]], temperature: float = 0.2, max_tokens: int = 10000) -> str:
+def call_openrouter(messages: List[Dict[str, str]], temperature: float = 0.15, max_tokens: int = 10000) -> str:
+    assert OPENROUTER_API_KEY, "OPENROUTER_API_KEY 未配置"
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json",
         "HTTP-Referer": "https://github.com/",
         "X-Title": "youtube-daily-summarizer"
     }
-    payload = {
-        "model": MODEL,
-        "messages": messages,
-        "temperature": temperature,
-        "max_tokens": max_tokens,
-        # 可按需启用函数/工具；这里直接请求模型“原生理解”链接内容
-    }
+    payload = {"model": MODEL, "messages": messages, "temperature": temperature, "max_tokens": max_tokens}
     resp = post_with_retries(f"{OPENROUTER_BASE}/chat/completions", headers, payload)
     data = resp.json()
     return data["choices"][0]["message"]["content"].strip()
 
-def build_messages(title: str, url: str, channel: str, description: str) -> List[Dict[str, str]]:
+# ====== 你的极简提示词：URL + 指令（不强制结构）======
+def build_messages(url: str) -> List[Dict[str, str]]:
+    # 系统提示只约束中文与不要代码围栏；不要求 JSON，不限格式
     system = (
-        "你是面向投资研究的长视频/播客摘要助手。请直接阅读提供的 YouTube 链接内容；"
-        "若无法直接访问，则基于可得信息（标题/频道/简介/常识）做稳健概括。"
-        "目标：用中文、结构化要点，尽可能完整覆盖关键信息——议题、核心观点、证据/数据、涉及主体/公司、人名、时间线与进展、结论/影响、风险/不确定性、后续行动。"
-        "避免空话和水分，严禁编造未出现的具体数据或结论。"
-        "严格输出：不允许出现任何解释文字、Markdown代码块或前后缀，不允许 ``` 符号。"
-        "只返回一行紧凑 JSON："
-        "{\"one_line\":\"(可留空，<=20字)\",\"points\":[\"要点1：主结论+依据/数字/时间/主体(<=120字)\",...最多12条]}"
+        "只用中文回答。不要使用 Markdown 代码围栏(```)，直接输出正文。"
+        "任务：总结该 YouTube 视频的内容要点，详细一点，结构化，不要删减重要信息。"
+        "允许使用小标题与项目符号列表，优先保留关键信息（议题、观点、证据/数据、主体/公司、人名、时间线、影响、风险、行动项）。"
+        "若无法直接读取链接内容，则基于标题/简介/常识稳健概括，禁止编造具体数字。"
     )
-    user = (
-        f"视频标题：{title}\n"
-        f"频道：{channel}\n"
-        f"URL：{url}\n"
-        f"简介（可为空）：{(description or '')[:800]}\n\n"
-        "请只返回上一段格式的一行 JSON。"
-    )
+    user = f"{url}\n请你总结内容要点，详细一点，结构化，不要删减重要信息，用中文。"
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
-
-def parse_json_or_fallback(text: str) -> Dict[str, Any]:
+# ====== 输出清洗：去掉 ``` 包裹，保留完整文本 ======
+def strip_code_fences(text: str) -> str:
     s = text.strip()
+    # 去除 ```xxx\n ... \n``` 外壳
+    m = re.fullmatch(r"```(?:[\w-]+)?\s*(.*?)\s*```", s, flags=re.S)
+    if m:
+        return m.group(1).strip()
+    # 有些模型会前后多段 fenced，尽量去外层
+    m2 = re.search(r"```(?:[\w-]+)?\s*(.*?)\s*```", s, flags=re.S)
+    if m2 and len(m2.group(1)) > len(s) * 0.4:
+        return m2.group(1).strip()
+    return s
 
-    # 1) 去掉 Markdown 代码块外壳（```json ... ``` 或 ``` ... ```）
-    if s.startswith("```"):
-        # 抓取三引号包裹内容
-        m = re.search(r"```(?:json|JSON)?\s*(.*?)\s*```", s, flags=re.S)
-        if m:
-            s = m.group(1).strip()
+# ====== 生成“摘要区”的一行预览（不改变正文）======
+def make_snippet(full_text: str, limit: int = 40) -> str:
+    # 取第一条非空行，去掉开头的列表符号
+    for ln in full_text.splitlines():
+        t = ln.strip()
+        if not t:
+            continue
+        t = re.sub(r"^[-*•·\u2022]+\s*", "", t)
+        return (t[:limit]).strip()
+    return ""
 
-    # 2) 提取最外层 {...} 片段（有些模型前后仍会加提示语）
-    if "{" in s and "}" in s:
-        start = s.find("{")
-        end = s.rfind("}")
-        s = s[start:end+1].strip()
+# ====== 将自由文本转成简洁 HTML（保留全部内容）======
+def text_to_html(text: str) -> str:
+    # 先整体转义，防止注入
+    esc = html.escape(text)
+    lines = esc.splitlines()
 
-    # 3) 去掉可能的尾逗号（JSON 容易因行尾逗号报错）
-    s = re.sub(r",\s*([\]}])", r"\1", s)
+    html_chunks: List[str] = []
+    in_ul = False
 
-    # 4) 正常 JSON 解析
-    try:
-        obj = json.loads(s)
-        one = (obj.get("one_line") or "").strip()[:60]
-        pts_raw = obj.get("points", [])
-        if isinstance(pts_raw, str):
-            # 若误返回成字符串，按换行/分号/顿号拆分
-            pts = [p.strip() for p in re.split(r"[\n；;、]", pts_raw) if p.strip()]
+    def flush_ul():
+        nonlocal in_ul
+        if in_ul:
+            html_chunks.append("</ul>")
+            in_ul = False
+
+    for raw in lines:
+        ln = raw.strip()
+        if not ln:
+            flush_ul()
+            html_chunks.append("<p style=\"margin:8px 0;\"></p>")
+            continue
+
+        # 列表项（- * • · 开头）
+        if re.match(r"^(&#45;|&#42;|•|·)\s+", ln):
+            if not in_ul:
+                html_chunks.append("<ul style=\"padding-left:20px; margin:6px 0;\">")
+                in_ul = True
+            # 去掉转义后的符号（- -> &#45;  * -> &#42;）
+            li = re.sub(r"^(&#45;|&#42;|•|·)\s+", "", ln)
+            html_chunks.append(f"<li style=\"margin:4px 0;\">{li}</li>")
         else:
-            pts = [str(p).strip() for p in pts_raw if str(p).strip()]
-        # 过滤掉像 "one_line": 这种误混入的键行
-        pts = [p for p in pts if not p.startswith('"one_line"') and not p.startswith("{") and not p.startswith("}")]
-        return {"one_line": one, "points": pts[:12]}
-    except Exception:
-        # 5) 兜底：把文本按行拆成“首行=摘要、余下=要点”
-        lines = [ln.strip(" \t-•·") for ln in s.splitlines() if ln.strip()]
-        one = lines[0][:60] if lines else "（解析失败）"
-        pts = [ln[:120] for ln in lines[1:13]]
-        return {"one_line": one, "points": pts}
+            flush_ul()
+            # 简单把“结尾是全角冒号/冒号”的行当作小标题加粗
+            if ln.endswith("：") or ln.endswith(":"):
+                html_chunks.append(f"<p style=\"margin:8px 0; font-weight:600;\">{ln}</p>")
+            else:
+                html_chunks.append(f"<p style=\"margin:8px 0;\">{ln}</p>")
 
+    flush_ul()
+    return "\n".join(html_chunks)
 
+# ====== 渲染邮件 HTML ======
 def render_html(items: List[Dict[str, Any]], date_str: str) -> str:
     env = Environment(loader=FileSystemLoader(str(TEMPLATE_DIR)), autoescape=select_autoescape(["html", "xml"]))
     tpl = env.get_template(TEMPLATE_FILE)
     return tpl.render(date=date_str, items=items)
 
-def send_email_html(subject: str, html: str):
+# ====== 纯文本备份（降级）======
+def html_to_text_fallback(html_str: str) -> str:
+    txt = re.sub(r"<br\s*/?>", "\n", html_str, flags=re.I)
+    txt = re.sub(r"</p\s*>", "\n\n", txt, flags=re.I)
+    txt = re.sub(r"<li\s*>", "• ", txt, flags=re.I)
+    txt = re.sub(r"<[^>]+>", "", txt)
+    txt = re.sub(r"\n{3,}", "\n\n", txt)
+    return txt.strip()
+
+# ====== 可靠发信（465 SSL / 587 STARTTLS；QUIT 异常忽略）======
+def send_email_html(subject: str, html_body: str):
     assert SMTP_SERVER and SMTP_USERNAME and SMTP_PASSWORD, "SMTP 环境变量未配置完整"
     from_addr = MAIL_FROM or SMTP_USERNAME
     to_addrs = [addr.strip() for addr in (MAIL_TO or SMTP_USERNAME).split(",") if addr.strip()]
 
-    # 构造 MIME 邮件
+    text_fallback = html_to_text_fallback(html_body)
     msg = MIMEMultipart("alternative")
     msg["From"] = from_addr
     msg["To"] = ", ".join(to_addrs)
     msg["Subject"] = subject
-    msg.attach(MIMEText(html, "html", "utf-8"))
+    msg.attach(MIMEText(text_fallback, "plain", "utf-8"))
+    msg.attach(MIMEText(html_body, "html", "utf-8"))
 
     server = None
     try:
         if int(SMTP_PORT) == 465:
-            # SSL 直连
             context = ssl.create_default_context()
             server = smtplib.SMTP_SSL(SMTP_SERVER, int(SMTP_PORT), timeout=60, context=context)
             server.ehlo()
         else:
-            # 587等端口：明文握手后 STARTTLS
             server = smtplib.SMTP(SMTP_SERVER, int(SMTP_PORT), timeout=60)
             server.ehlo()
             context = ssl.create_default_context()
@@ -168,8 +187,6 @@ def send_email_html(subject: str, html: str):
 
         server.login(SMTP_USERNAME, SMTP_PASSWORD)
         server.sendmail(from_addr, to_addrs, msg.as_string())
-
-        # 有些服务商在 QUIT 时直接掐连接；忽略退出异常避免 -1,b'\x00\x00\x00'
         try:
             server.quit()
         except Exception:
@@ -181,18 +198,16 @@ def send_email_html(subject: str, html: str):
         except Exception:
             pass
 
-
 def main():
-    assert OPENROUTER_API_KEY, "OPENROUTER_API_KEY 未配置"
-    rows = load_today_updates()
     date_str = today_date_str_tz("Asia/Shanghai")
+    rows = load_today_updates()
 
-    # 今日无更新：仍然发空日报，方便你在邮箱里有心智节拍
+    # 今日无更新也发空日报（保留节拍）
     if not rows:
-        html = render_html([], date_str)
+        html_body = render_html([], date_str)
         OUT_DIR.mkdir(exist_ok=True)
-        (OUT_DIR / f"daily_report_{date_str}.html").write_text(html, encoding="utf-8")
-        send_email_html(f"YouTube 播客日报 · {date_str}（无更新）", html)
+        (OUT_DIR / f"daily_report_{date_str}.html").write_text(html_body, encoding="utf-8")
+        send_email_html(f"YouTube 播客日报 · {date_str}（无更新）", html_body)
         print("No updates today. Sent empty report.")
         return
 
@@ -200,11 +215,9 @@ def main():
     items: List[Dict[str, Any]] = []
 
     for r in rows:
-        vid = r.get("video_id","")
         url = r.get("url","")
         title = r.get("title","")
         ch = r.get("channel_title","")
-        desc = r.get("description","") or ""
         published_iso = r.get("published","")
         try:
             dt = datetime.fromisoformat(published_iso.replace("Z","+00:00")).astimezone(tzinfo)
@@ -212,26 +225,31 @@ def main():
         except Exception:
             published_local = published_iso
 
+        # 调 LLM：只给 URL + 极简中文指令
         try:
-            raw = call_openrouter(build_messages(title, url, ch, desc))
-            parsed = parse_json_or_fallback(raw)
+            raw = call_openrouter(build_messages(url))
         except Exception as e:
-            parsed = {"one_line": "（模型调用失败，保留占位）", "points": []}
+            raw = f"（模型调用失败：{e}）"
+
+        # 去掉 ``` 包裹，保留完整文本
+        cleaned = strip_code_fences(raw)
+        snippet = make_snippet(cleaned, limit=40)
+        summary_html = text_to_html(cleaned)
 
         items.append({
-            "video_id": vid,
+            "video_id": r.get("video_id",""),
             "url": url,
             "title": title,
             "channel_title": ch,
             "published_local": published_local,
-            "one_line_summary": parsed["one_line"],
-            "key_points": parsed["points"],
+            "snippet": snippet,               # 今日摘要里显示
+            "summary_html": summary_html,     # 正文完整内容
         })
 
-    html = render_html(items, date_str)
+    html_body = render_html(items, date_str)
     OUT_DIR.mkdir(exist_ok=True)
-    (OUT_DIR / f"daily_report_{date_str}.html").write_text(html, encoding="utf-8")
-    send_email_html(f"YouTube 播客日报 · {date_str}", html)
+    (OUT_DIR / f"daily_report_{date_str}.html").write_text(html_body, encoding="utf-8")
+    send_email_html(f"YouTube 播客日报 · {date_str}", html_body)
     print(f"Report generated for {date_str}, items: {len(items)}")
 
 if __name__ == "__main__":
