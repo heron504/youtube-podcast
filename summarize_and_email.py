@@ -70,24 +70,16 @@ def call_openrouter(messages: List[Dict[str, str]], temperature: float = 0.15, m
     return data["choices"][0]["message"]["content"].strip()
 
 # ====== 你的极简提示词：URL + 指令（不强制结构）======
-def build_messages(url: str, title: str, channel: str, description: str) -> List[Dict[str, str]]:
+def build_messages(url: str) -> list[dict[str, str]]:
+    # 只加硬性约束：必须仅基于该链接视频内容
     system = (
-        "只用中文回答。不要使用 Markdown 代码围栏(```)。不得写任何开场白（如“好的/以下是/这是…”）。"
-        "必须仅基于“该链接视频”的实际内容进行总结；"
-        "若无法直接读取该链接，请在第一行输出：[无法读取链接]，随后仅基于标题+简介做稳健概括，并显式标注“（基于标题+简介）”，禁止编造具体数字或未出现的结论。"
-        "允许使用小标题与项目列表，信息要完整、结构化、详细。"
+        "必须仅基于该链接视频的实际内容进行总结。"
+        "只用中文回答。"
     )
-    # 仍然坚持你的极简用户指令，但提供上下文以防模型跑偏
-    user = (
-        f"{url}\n"
-        f"标题：{title}\n"
-        f"频道：{channel}\n"
-        f"简介（可为空）：{(description or '')[:1200]}\n\n"
-        "请你总结内容要点，详细一点，结构化，不要删减重要信息，用中文。"
-    )
-    return [{"role": "system", "content": system}, {"role": "user", "content": user}]
-
-
+    # 你的极简指令保持不变
+    user = f"{url}\n请你总结内容要点，详细一点，结构化，不要删减重要信息，用中文。"
+    return [{"role": "system", "content": system},
+            {"role": "user", "content": user}]
 
 
 # ====== 输出清洗：去掉 ``` 包裹，保留完整文本 ======
