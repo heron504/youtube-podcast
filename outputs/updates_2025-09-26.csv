@@ -1,0 +1,168 @@
+published,channel_title,channel_id,title,url,video_id,description,viewCount,likeCount,commentCount,duration
+2025-09-25T07:09:05Z,Latent Space,UCxBcwypKK-W3GHd_RZ9FZrQ,Snowglobe: Simulations for your AI,https://www.youtube.com/watch?v=TZGVB6L_2Eo,TZGVB6L_2Eo,"Shreya Rajpal (guest #12 on Latent Space back in 2023!) is back in the studio with her newest product launch, Snowglobe (https://snowglobe.so/). Rather than hand writing rules and guardrails for your AI like their first product, you can now simulate conversations and personas to figure out how your AI might fail in production.  
+Shreya’s first appearance: https://www.latent.space/p/guaranteed-quality-and-structure
+00:00:00 Introduction
+00:00:32 From Guardrails AI to Snowglobe
+00:01:24 The Mission: Making Generative AI Reliable
+00:03:10 Simulation vs Guardrails: Finding What's Broken
+00:06:12 Live Demo: AI Life Coach Simulation
+00:10:25 Persona Engineering and Diversity
+00:12:34 Multi-Model Architecture Strategy
+00:16:15 Enterprise Adoption and Use Cases
+00:17:55 Beyond Chat: Voice, Agents, and Tool Calls
+00:20:03 The Future of AI Testing and Simulation
+00:22:09 Simulation Strategy and Pricing Model
+00:25:19 Getting Started and Hiring",509,11,0,PT26M14S
+2025-09-25T10:01:35Z,"No Priors: AI, Machine Learning, Tech, & Startups",UCSI7h9hydQ40K5MJHnCrQvw,No Priors Ep. 133 | With Alpha School Principal Joe Liemandt,https://www.youtube.com/watch?v=ol_pDIlL71U,ol_pDIlL71U,"What if kids could master their academics in just two hours a day and spend the rest of their time developing real-world skills they’re passionate about? Joe Liemandt, founder of the software company Trilogy, is doing just that. Sarah Guo and Elad Gil are joined by Joe Liemandt, principal of Alpha School, to discuss his AI-driven vision of reinventing K-12 education. Joe talks about the strategies that Alpha School employs: reducing the traditional six-hour school day to two, replacing teachers with “Guides,” using financial incentives as motivation, and dedicating the remainder of the school day to project-based workshops that reflect the students’ passions. Together, they also examine Joe’s plan to scale Alpha School, the youth mental health crisis, and why edtech so far has failed.
+Sign up for new podcasts every week. Email feedback to show@no-priors.com
+Follow us on Twitter: @NoPriorsPod | @Saranormous | @EladGil | @AlphaSchoolATX
+Chapters:
+00:00 – Joe Liemandt Introduction
+00:27 – …",434,17,3,PT1H1M50S
+2025-09-25T10:10:16Z,"Cognitive Revolution ""How AI Changes Everything""",UCjNRVMBVI30Sak_p6HRWhIA,"Stripe's Payments Foundation Model: How Data & Infra Create Compounding Advantage, w/ Emily Sands",https://www.youtube.com/watch?v=zhUrizDKL5I,zhUrizDKL5I,"Today, Emily Sands, head of data and AI at Stripe, joins The Cognitive Revolution to discuss how the company built a payments foundation model that processes tens of billions of transactions into dense embeddings, exploring the technical architecture behind fraud detection improvements and the modular approach that enables rapid deployment of AI across Stripe's $1.4 trillion payment network.
+
+Check out our sponsors: Google Gemini Notebook LM, Linear, AGNCY, Claude, Oracle Cloud Infrastructure.
+
+Shownotes below brought to you by Notion AI Meeting Notes - try one month for free at: https://notion.com/lp/nathan
+- Stripe's Scale: Processes $1.4 trillion annually, serving both small businesses and large enterprises (over half of Fortune 100 companies).
+- Business Growth Impact: Businesses using Stripe grew 7x faster than the S&P 500 last year through optimizations across the payments lifecycle.
+- Payments Foundation Model: Stripe has developed a domain-specific foundation model that convert …",247,13,0,PT1H22M8S
+2025-09-25T12:01:01Z,Latent Space,UCxBcwypKK-W3GHd_RZ9FZrQ,AI Strategy Gap in Non Tech Companies,https://www.youtube.com/watch?v=Spm8uThbRXY,Spm8uThbRXY,,433,6,0,PT1M8S
+2025-09-25T13:00:41Z,a16z,UC9cn0TuPq4dnbTY-CBsm8XA,From Vibe Coding to Vibe Researching: OpenAI’s Mark Chen and Jakub Pachocki,https://www.youtube.com/watch?v=KSgPNVmZ8jQ,KSgPNVmZ8jQ,"What comes after vibe coding? Maybe vibe researching.
+
+OpenAI’s Chief Scientist, Jakub Pachocki, and Chief Research Officer, Mark Chen, join a16z general partners Anjney Midha and Sarah Wang to go deep on GPT-5—how they fused fast replies with long-horizon reasoning, how they measure progress once benchmarks saturate, and why reinforcement learning keeps surprising skeptics.
+
+They explore agentic systems (and their stability tradeoffs), coding models that change how software gets made, and the bigger bet: an automated researcher that can generate new ideas with real economic impact. Plus: how they prioritize compute, hire “cave-dweller” talent, protect fundamental research inside a product company, and keep pace without chasing every shiny demo.
+
+Timecodes:
+0:00 Introduction
+0:25 The Launch of GPT-5  
+2:28 Evaluating Progress: Evals & Milestones  
+5:07 Surprising Capabilities of GPT-5  
+7:10 The Future of Automated Research  
+8:59 Agency, Reasoning, and Model Planning  
+10:18 Extending …",6528,,20,PT53M4S
+2025-09-25T14:26:27Z,20VC with Harry Stebbings,UCf0PBRjhf0rF8fWBIxTuoWA,The Impact of H1B Visas on Startups in the US & NVIDIA Invests $100BN Into OpenAI,https://www.youtube.com/watch?v=oZ7eeLU-G-Y,oZ7eeLU-G-Y,"Jason Lemkin is one of the leading SaaS investors of the last decade with a portfolio including the likes of Algolia, Talkdesk, Owner, RevenueCat, Saleloft and more.
+
+Rory O’Driscoll is a General Partner @ Scale where he has led investments in category leaders such as Bill.com (BILL), Box (BOX), DocuSign (DOCU), and WalkMe (WKME), among others.
+-----------------------------------------------
+
+In Today’s Episode We Discuss:
+
+00:00 Intro 
+01:17 Nvidia's Massive $100BN Investment in OpenAI
+05:45 Is Anthropic Negatively Positioned by OpenAI Gaining NVIDIA Investment
+22:24 Is Triple, Triple, Double, Double Dead
+41:59 Navan Files to Go Public at $8BN
+54:17 Lockup Periods and Liquidity
+01:02:17 Impact of H-1B Visa Changes on Startups
+01:07:40 Notion Hits $500M ARR Re-Accelerating
+01:16:16 Why Founder Friendly is Total BS Today
+01:19:48 Kalshi Quick-Fire Round
+----------------------------------------------------------------------------------------------
+
+Subscribe on Spotify:
+https://open.spot …",3579,69,34,PT1H25M49S
+2025-09-25T15:01:37Z,Alex Kantrowitz,UCye1YedIypHffYb8k6Gp9wg,AI's rate of progress: slowly and then all at once,https://www.youtube.com/watch?v=oaZSLthG1t4,oaZSLthG1t4,,223,3,0,PT1M31S
+2025-09-25T15:21:04Z,20VC with Harry Stebbings,UCf0PBRjhf0rF8fWBIxTuoWA,“Founder Friendly” is Bullsh**,https://www.youtube.com/watch?v=fWE25Q2TzmU,fWE25Q2TzmU,"#20VC with Scale GP Rory O’Driscoll, SaaStr Founder Jason Lemkin. Link in bio.
+—
+#HarryStebbings #Business #shorts",2299,53,1,PT47S
+2025-09-25T15:53:54Z,Greylock,UCZ7x7yDBbEFCGztD8BYvRhA,Cybersecurity Agents in Five Years,https://www.youtube.com/watch?v=G6rFoPfuX48,G6rFoPfuX48,Evan Reiser of Abnormal AI and Vineet Edupuganti of Cogent share their perspectives on what to expect from agents in five years.,107,2,0,PT56S
+2025-09-25T15:53:58Z,Greylock,UCZ7x7yDBbEFCGztD8BYvRhA,Evaluating Agents vs. Software,https://www.youtube.com/watch?v=_cGuUxpGBYI,_cGuUxpGBYI,"At a recent Greylock Change Agents event, Ankur Goyal, founder and CEO of Braintrust, shares how to think about evaluating agents.",124,1,0,PT1M2S
+2025-09-25T15:54:04Z,Greylock,UCZ7x7yDBbEFCGztD8BYvRhA,Codegen Tools and Production Challenges,https://www.youtube.com/watch?v=bfdwbbD9kW4,bfdwbbD9kW4,"At a recent Greylock Change Agents event, Resolve AI CTO and Co-Founder Mayank Agarwal and VP of Engineering Rushin Shah discuss whether codegen tools can solve production problems.",157,4,0,PT1M48S
+2025-09-25T15:54:10Z,Greylock,UCZ7x7yDBbEFCGztD8BYvRhA,Vibe Coding and Vibe Debugging,https://www.youtube.com/watch?v=4_hBd3HX4XU,4_hBd3HX4XU,"At a Greylock Change Agents event, Resolve AI CTO and Co-Founder Mayank Agarwal and VP of Engineering Rushin Shah discuss vibe coding and vibe debugging.",398,12,0,PT1M11S
+2025-09-25T15:54:13Z,Greylock,UCZ7x7yDBbEFCGztD8BYvRhA,Multi-Agent Interaction,https://www.youtube.com/watch?v=UpAFbhwQzgA,UpAFbhwQzgA,"At a Greylock Change Agents event, Karthik Narasimhan, Head of Research at Sierra and Associate Professor of Computer Science at Princeton, discusses multi-agent interaction.",476,12,0,PT1M30S
+2025-09-25T15:54:17Z,Greylock,UCZ7x7yDBbEFCGztD8BYvRhA,Build vs. Buy  - Agentic AI Apps,https://www.youtube.com/watch?v=VUwudC9UGyo,VUwudC9UGyo,"At a Greylock Change Agents event, the CEOs of Decagon, Resolve AI, and Windsurf discuss how to think about when to build verses buy when it comes to agentic AI applications.",644,10,0,PT1M12S
+2025-09-25T16:05:08Z,All-In Podcast,UCESLZhusAkFfsNsApnjF_Cg,"Paramount, Warner Bros, & TikTok: Inside the Ellison Media Empire Merger",https://www.youtube.com/watch?v=FC9e5XvwJ8Q,FC9e5XvwJ8Q,"Full episode: https://youtu.be/1X6xwxQRXlY
+
+Follow the besties: 
+https://x.com/chamath
+https://x.com/Jason
+https://x.com/DavidSacks
+https://x.com/friedberg
+
+Follow on X:
+https://x.com/theallinpod
+
+Follow on Instagram:
+https://www.instagram.com/theallinpod
+
+Follow on TikTok:
+https://www.tiktok.com/@theallinpod
+
+Follow on LinkedIn: 
+https://www.linkedin.com/company/allinpod
+
+Intro Music Credit:
+https://rb.gy/tppkzl
+https://x.com/yung_spielburg
+
+Intro Video Credit:
+https://x.com/TheZachEffect
+
+#allin #tech #news",17754,387,61,PT11M51S
+2025-09-25T16:30:55Z,All-In Podcast,UCESLZhusAkFfsNsApnjF_Cg,Dartmouth President: The goal is to make it clear that colleges aren't political organizations,https://www.youtube.com/watch?v=JzZ96oyDsww,JzZ96oyDsww,"Thanks to our partners for making this happen!
+
+Solana - Solana is the high performance network powering internet capital markets, payments, and crypto applications. Connect with investors, crypto founders, and entrepreneurs at Solana’s global flagship event during Abu Dhabi Finance Week & F1: https://solana.com/breakpoint
+
+OKX - The new way to build your crypto portfolio and use it in daily life. We call it the new money app. https://www.okx.com/
+
+Google Cloud - The next generation of unicorns is building on Google Cloud's industry-leading, fully integrated AI stack: infrastructure, platform, models, agents, and data. https://cloud.google.com/
+
+IREN - IREN AI Cloud, powered by NVIDIA GPUs, provides the scale, performance, and reliability to accelerate your AI journey. https://iren.com/
+
+Oracle - Step into the future of enterprise productivity at Oracle AI Experience Live. https://www.oracle.com/artificial-intelligence/data-ai-events/
+
+Circle - The America-based company behind USDC — a …",3301,45,3,PT1M2S
+2025-09-25T17:40:22Z,Alex Kantrowitz,UCye1YedIypHffYb8k6Gp9wg,What’s Holding Back Enterprise AI — With Shiv Ramji,https://www.youtube.com/watch?v=PjKCzIeCzCo,PjKCzIeCzCo,"Shiv Ramji is the president of Auth0 at Okta. He joins our show to discuss why businesses are struggling to implement generative AI effectively in their organizations.
+
+Tune in for a deep dive on why identity management is a foundational aspect in building successful AI programs. In this episode, we also discuss the importance of Ai governance, whether AI agents sit side by side with humans in software interfaces, and how we’ll verify we’re real in the future.
+
+Resources:
+Why your AI strategy is exposing you to risk — and what to do about it
+https://www.okta.com/newsroom/articles/why-your-ai-strategy-is-exposing-you-to-risk---and-what-to-do-ab/
+
+Customer Identity Trends Report 2025: Securing customer trust in the age of AI
+https://www.okta.com/newsroom/articles/customer-identity-trends-report-2025--securing-customer-trust-in/
+
+The ‘superuser’ blind spot: Why AI agents demand dedicated identity security
+https://www.okta.com/newsroom/articles/understanding-the-ai-agent-identity-challenge …",788,21,6,PT32M59S
+2025-09-25T19:00:10Z,Latent Space,UCxBcwypKK-W3GHd_RZ9FZrQ,Deterministic vs Non Deterministic Workflows,https://www.youtube.com/watch?v=CAAXhszVlWE,CAAXhszVlWE,,69,4,0,PT1M14S
+2025-09-25T20:32:04Z,"No Priors: AI, Machine Learning, Tech, & Startups",UCSI7h9hydQ40K5MJHnCrQvw,The State of US Energy,https://www.youtube.com/watch?v=Pl3q4uapnE8,Pl3q4uapnE8,"Jared Kushner says the U.S. has massive energy projects stuck in FERC permitting and warns against overregulating AI, arguing America needs to free up business and stay the global leader in innovation.
+
+#podcast #ai",380,8,0,PT47S
+2025-09-25T21:22:29Z,This Week in Startups,UCkkhmBWfS7pILYIk0izkc3A,"AI was supposed to help workers, but now some are making slop!",https://www.youtube.com/watch?v=iFMasAjDqyY,iFMasAjDqyY,"Follow Alex:
+X: https://x.com/alex
+LinkedIn: ⁠https://www.linkedin.com/in/alexwilhelm
+
+Follow Jason:
+X: https://twitter.com/Jason
+LinkedIn: https://www.linkedin.com/in/jasoncalacanis
+
+Subscribe to This Week in Startups for full episodes: https://www.youtube.com/channel/UCkkhmBWfS7pILYIk0izkc3A?sub_confirmation=1
+
+Subscribe to This Week in Startups Clips for full episodes:
+https://www.youtube.com/channel/UCS7tJlcUA6PzVHEMo-X7ddg?sub_confirmation=1
+
+#startups #podcast #tech",329,2,0,PT50S
+2025-09-25T22:43:39Z,Dwarkesh Patel,UCXl4i9dYBrFOabk0xGmbkRA,Why Elections Matter More Than You Think - Sarah Paine,https://www.youtube.com/watch?v=xP46TEV2lJs,xP46TEV2lJs,,52019,3373,222,PT1M18S
+2025-09-25T23:19:50Z,Latent Space,UCxBcwypKK-W3GHd_RZ9FZrQ,Building the God Coding Agent,https://www.youtube.com/watch?v=b4rOVZWLW6E,b4rOVZWLW6E,"Quinn Slack (CEO) and Thorsten Ball (Amp Dictator) from SourceGraph join the show to talk about Amp Code, how they ship 15x/day with no code reviews, and why subagents and prompt optimizers aren’t a promising direction for coding agents.
+Amp Code: https://ampcode.com/
+Latent Space: https://latent.space/
+00:00 Introduction
+00:41 Transition from Cody to Amp
+03:18 The Importance of Building the Best Coding Agent
+06:43 Adapting to a Rapidly Evolving AI Tooling Landscape
+09:36 Dogfooding at Sourcegraph
+12:35 CLI vs. VS Code Extension
+21:08 Positioning Amp in Coding Agent Market
+24:10 The Diminishing Importance of Model Selectors
+32:39 Tooling vs. Harness
+37:19 Common Failure Modes of Coding Agents
+47:33 Agent-Friendly Logging and Tooling
+52:31 Are Subagents Real?
+56:52 New Frameworks and Agent-Integrated Developer Tools
+1:00:25 How Agents Are Encouraging Codebase and Workflow Changes
+1:03:13 Evolving Outer Loop Tasks
+1:07:09 Version Control and Merge Conflicts in an AI-First World
+1:10:36 R …",385,15,2,PT1H21M59S
