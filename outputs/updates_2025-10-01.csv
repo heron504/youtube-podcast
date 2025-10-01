@@ -1,0 +1,191 @@
+published,channel_title,channel_id,title,url,video_id,description,viewCount,likeCount,commentCount,duration
+2025-09-30T06:40:21Z,Latent Space,UCxBcwypKK-W3GHd_RZ9FZrQ,"⚡️Claude Sonnet 4.5 and Anthropic's roadmap for Agents and Developers — Mike Krieger, Anthropic",https://www.youtube.com/watch?v=aJxnel2_O7Q,aJxnel2_O7Q,"The gang chat with Mike Krieger, the CPO at Anthropic, to discuss the launch of Claude 4.5 and its implications for AI development. They explore the integration of AI models into products, the importance of usability and design, and the evolving role of AI in user interface design. Mike shares insights on model evaluation, interactive planning, and the future of Anthropic's platform, emphasizing the need for collaboration with the developer community to enhance AI capabilities.
+
+Thanks to Reena and Lexie for working with us to do a Day 1 Launch pod!
+
+Timestamps!
+
+00:00 Introduction to Mike Krieger
+00:16 The Launch of Claude 4.5
+01:19 The Handoff Between Model and Product
+03:10 Evaluating New Models
+05:11 Designing Outputs and User Experience
+08:36 Improving UI and Aesthetic Understanding
+10:18 Prototyping and Iteration in Product Development
+12:42 The Role of Interactive Planning
+15:02 Evaluating Model Performance and Customer Feedback
+18:23 Future of the Anthropic Platform
+22:34 Closi …",3549,78,6,PT26M25S
+2025-09-30T09:00:12Z,Sequoia Capital,UCWrF0oN6unbXrWsTN7RctTw,"Block CTO Dhanji Prasanna: Building the AI-First Enterprise with Goose, their Open Source Agent",https://www.youtube.com/watch?v=64J2lHxP0ok,64J2lHxP0ok,"As CTO of Block, Dhanji Prasanna has overseen a dramatic enterprise AI transformation, with engineers saving 8-10 hours a week through AI automation. Block’s open-source agent goose connects to existing enterprise tools through MCP, enabling everyone from engineers to sales teams to build custom applications without coding. Dhanji shares how Block reorganized from business unit silos to functional teams to accelerate AI adoption, why they chose to open-source their most valuable AI tool and why he believes swarms of smaller AI models will outperform monolithic LLMs.
+
+Hosted by: Sonya Huang and Roelof Botha, Sequoia Capital
+
+00:00 Introduction 
+01:48 AI: Friend or Foe?
+03:13 Block's Journey with AI and Technology
+04:47 Block's Diverse Product Range
+07:04 Driving AI at Block
+14:28 The Evolution of Goose
+27:45 Integrating Goose with Existing Systems
+28:23 Goose's Learning and Recipe Feature
+29:41 Tool Use and LLM Providers
+31:40 Impact of AI on Developer Productivity
+34:37 Block's Commitm …",1157,21,2,PT59M44S
+2025-09-30T12:00:39Z,Latent Space,UCxBcwypKK-W3GHd_RZ9FZrQ,The Dark Side of Synthetic AI Data ⚠️,https://www.youtube.com/watch?v=JR44I-SwB7U,JR44I-SwB7U,The hidden danger of synthetic AI data revealed: Why just copying textbook styles could be making AI models worse. Essential insights for anyone interested in AI development,385,4,0,PT1M39S
+2025-09-30T14:01:39Z,20VC with Harry Stebbings,UCf0PBRjhf0rF8fWBIxTuoWA,Can Europe win the AI Race?,https://www.youtube.com/watch?v=zExUy4kCywY,zExUy4kCywY,"#20VC with Groq Founder & CEO Jonathan Ross. Link in bio.
+—
+#HarryStebbings #Business #shorts",13541,244,9,PT46S
+2025-09-30T14:30:13Z,Masters of Scale,UCiemDAS1bXMBTx3jIIOukFg,Good American's Emma Grede on looking beyond social media marketing | Masters of Scale Summit,https://www.youtube.com/watch?v=qwxjGUESMHk,qwxjGUESMHk,"Apply to attend Masters of Scale Summit 2025 (Oct. 7-9): https://www.summit.mastersofscale.com
+
+From the Masters of Scale Summit stage in 2024,  Emma Grede, co-founder of Good American and founding partner of SKIMS, shares why traditional marketing shortcuts no longer work — and what truly drives lasting connection with customers today. From the decline of social media arbitrage to the unexpected power of becoming B Corp certified, Emma reveals how aligning your business with real purpose not only strengthens customer loyalty but also inspires teams to push boundaries and future-proof the brand.
+
+📫 THE MASTERS OF SCALE NEWSLETTER
+35,000+ read our free weekly newsletter packed with insights from the world’s most iconic business leaders. Sign up: https://hubs.la/Q01RPQH-0
+
+🎧 LISTEN TO THE PODCAST
+Apple Podcasts: https://mastersofscale.com/ApplePodcasts
+Spotify: https://mastersofscale.com/Spotify
+
+💻 LEARN MORE
+Our website: https://mastersofscale.com
+
+🚀 JOIN OUR COMMUNITY
+LinkedIn: https:/ …",89,1,0,PT2M39S
+2025-09-30T16:50:55Z,"No Priors: AI, Machine Learning, Tech, & Startups",UCSI7h9hydQ40K5MJHnCrQvw,The $50K School Myth,https://www.youtube.com/watch?v=cVzZaDhXm-Q,cVzZaDhXm-Q,"Joe Liemandt calls out a harsh truth: families pay $50K a year for “elite” private schools, but students often walk away years behind. It’s a wake-up call for parents sold on prestige over results.
+
+#podcast #business #truth",571,5,0,PT31S
+2025-09-30T16:58:08Z,Alex Kantrowitz,UCye1YedIypHffYb8k6Gp9wg,Anthropic CEO: AGI Is Marketing,https://www.youtube.com/watch?v=99VtLoao11w,99VtLoao11w,"When will we reach AGI? Dario Amodei says it doesn’t matter — the term is marketing. As is super-intelligence. But the fact that AI models are improving? That’s real. 
+
+“The thing I think is real, that I've said over and over again, is the exponential,” he says. “The idea that every few months we get an AI model that is better than the AI model we got before, and that we get that by investing more compute in AI models, more data, more new types of training models.”",1402,18,2,PT1M25S
+2025-09-30T17:00:06Z,a16z,UC9cn0TuPq4dnbTY-CBsm8XA,Building an AI Physicist: ChatGPT Co-Creator’s Next Venture,https://www.youtube.com/watch?v=5FoWFeJCa2A,5FoWFeJCa2A,"Scaling laws took us from GPT-1 to GPT-5 Pro. But in order to crack physics, we’ll need a different approach.
+
+In this episode, a16z General Partner Anjney Midha talks to Liam Fedus, former VP of post-training research and co-creator of ChatGPT at OpenAI, and Ekin Dogus Cubuk, former head of materials science and chemistry research at Google DeepMind, on their new startup Periodic Labs and their plan to automate discovery in the hard sciences.
+
+00:00 Introduction
+02:17 The Role of LLMs in Physics and Chemistry Research
+03:53 What is Periodic Labs?
+05:25 The Importance of Experimentation
+07:44 Challenges and Goals in Physics Research
+14:45 Building the Team
+17:29 Scaling Laws and Physical Verification
+22:36 Focus on Superconductivity
+25:33 Creating a Repeatable Process for ML Systems
+26:08 Balancing Commercial Viability and Scientific Goals
+27:39 Periodic's Mission and Industry Applications
+28:49 Integrating Diverse Expertise in the Team
+29:52 Teaching LLMs to Reason in Physics and Chem …",2181,,6,PT51M49S
+2025-09-30T17:00:45Z,20VC with Harry Stebbings,UCf0PBRjhf0rF8fWBIxTuoWA,Who’s made the Harmonic Hot 25 in Q4…?,https://www.youtube.com/watch?v=X8i6Nv8f_4w,X8i6Nv8f_4w,"Head to harmonic.ai for the full list & follow #20VC for more business insights and tips.⁠
+—
+#HarryStebbings #Business #shorts",5174,256,3,PT1M40S
+2025-09-30T17:57:06Z,All-In Podcast,UCESLZhusAkFfsNsApnjF_Cg,"Arm CEO Rene Haas on AI: Nvidia Lessons, Intel’s Decline and the US-China Chip War",https://www.youtube.com/watch?v=JKUFTJJX19w,JKUFTJJX19w,"(0:00) Introducing Arm CEO Rene Haas
+(1:08) Lessons from working with Jensen Huang
+(3:20) Arm’s history, understanding Nvidia’s dominance in AI, training vs inference, physical AI market size
+(10:01) China’s AI ecosystem, the US-Intel deal, rare earths, creating a US “national champion”
+(15:35) Manufacturing in America: how to create a culture of excellence?
+(18:34) US export controls, building in the UK
+(23:42) US-China AI arms race
+
+Thanks to our partners for making this happen!
+
+Solana - Solana is the high performance network powering internet capital markets, payments, and crypto applications. Connect with investors, crypto founders, and entrepreneurs at Solana’s global flagship event during Abu Dhabi Finance Week & F1: https://solana.com/breakpoint
+
+OKX - The new way to build your crypto portfolio and use it in daily life. We call it the new money app. https://www.okx.com/
+
+Google Cloud - The next generation of unicorns is building on Google Cloud's industry-leading, fully integra …",28162,649,16,PT25M5S
+2025-09-30T19:00:07Z,Latent Space,UCxBcwypKK-W3GHd_RZ9FZrQ,The Hidden Flaw in Large Language Models,https://www.youtube.com/watch?v=8kFQK-jVvu0,8kFQK-jVvu0,Jeff explains why model providers don’t talk about their models’ weaknesses—and how context rot is the quiet problem slowing down your AI apps.,70,1,0,PT52S
+2025-09-30T19:27:11Z,Lex Fridman,UCSHZKyawb77ixDdsGog4iWA,"Pavel Durov: Telegram, Freedom, Censorship, Money, Power & Human Nature | Lex Fridman Podcast #482",https://www.youtube.com/watch?v=qjPH9njnaVU,qjPH9njnaVU,"Pavel Durov is the founder and CEO of Telegram.
+Thank you for listening ❤ Check out our sponsors: https://lexfridman.com/sponsors/ep482-sb
+See below for timestamps, transcript, and to give feedback, submit questions, contact Lex, etc.
+
+*Transcript:*
+https://lexfridman.com/pavel-durov-transcript
+
+*EXTRA FILES FOR EPISODE:*
+If you need captions or videos with audio tracks for clips etc, go here: 
+https://lexfridman.com/pavel-durov-files
+
+*HOW TO SWITCH BETWEEN LANGUAGES:*
+This episode is available in English, Russian, Ukrainian, French, Hindi. To switch between languages on the main episode YouTube video, click: Settings (Gear Icon) ... Audio Track ... Choose Language.
+
+*CONTACT LEX:*
+*Feedback* - give feedback to Lex: https://lexfridman.com/survey
+*AMA* - submit questions, videos or call-in: https://lexfridman.com/ama
+*Hiring* - join our team: https://lexfridman.com/hiring
+*Other* - other ways to get in touch: https://lexfridman.com/contact
+
+*EPISODE LINKS:*
+Pavel's Telegram: https://t. …",161530,7147,1344,PT4H34M10S
+2025-09-30T19:43:47Z,Greylock,UCZ7x7yDBbEFCGztD8BYvRhA,Future of Evals,https://www.youtube.com/watch?v=RU2BKEuOXcw,RU2BKEuOXcw,"At a recent Greylock Change Agents event, Ankur Goyal, founder and CEO of Braintrust, predicts that evals will be the core driver for how people build great AI software.
+
+Clip from Evaluating Agents with Braintrust: https://youtu.be/J0NdPARq5pk
+
+#artificialintelligence #evals #aiagents #llmsystems #greylock",130,2,0,PT1M54S
+2025-09-30T19:47:07Z,Greylock,UCZ7x7yDBbEFCGztD8BYvRhA,How to Improve Evals,https://www.youtube.com/watch?v=Ey9-xF-e_Bo,Ey9-xF-e_Bo,"At a Greylock Change Agents event hosted by Corinne Riley, Ankur Goyal, founder and CEO of Braintrust, shares the criteria he looks for when improving evals.
+
+Clip from Evaluating Agents with Braintrust: https://youtu.be/J0NdPARq5pk
+
+#evals #softwareengineering #artificialintelligence #improvingevals #greylock",29,0,0,PT1M25S
+2025-09-30T19:51:31Z,Greylock,UCZ7x7yDBbEFCGztD8BYvRhA,Measuring Outcomes with Agentic AI,https://www.youtube.com/watch?v=1gsJTyXQrNM,1gsJTyXQrNM,"At a Greylock Change Agents event hosted by Corinne Riley, Resolve AI VP of Engineering Rushin Shah explains how he evaluates agentic AI in software engineering.
+
+Clip from Agents for Complex Software Engineering: https://youtu.be/7o0ZnFIfiE8
+
+#greylock #resolveai #evaluatingai #agenticai #softwareengineering",589,3,0,PT48S
+2025-09-30T19:53:25Z,Greylock,UCZ7x7yDBbEFCGztD8BYvRhA,Vibe Debugging Explained,https://www.youtube.com/watch?v=FTH3FlPbwnc,FTH3FlPbwnc,"At a Greylock Change Agents event hosted by Corinne Riley, Resolve AI Co-Founder Mayank Agarwal shares how vibe debugging works.
+
+Clip from Agents for Complex Software Engineering: https://youtu.be/7o0ZnFIfiE8
+
+#greylock #resolveai #vibedebugging #vibecoding #softwareengineering",513,6,0,PT33S
+2025-09-30T20:20:11Z,This Week in Startups,UCkkhmBWfS7pILYIk0izkc3A,Breaking the Sound Barrier with Blake Scholl from Boom Supersonic | E2186,https://www.youtube.com/watch?v=kigffUx98Oo,kigffUx98Oo,"Today’s show: 
+
+How do you get investors excited about jets when they’re hyper-focused on new AI tools?
+
+In a fresh TWiST 500 interview, Alex sits down with Blake Scholl of Boom Supersonic to talk about the Overture, the world’s fastest plane that recently broke the sound barrier over the Mojave Desert. (That’s a first for a private company, rather than a military or government.)
+
+Hear about the secrets to avoiding a noisy and disruptive sonic boom, using satellites to set the most efficient routes, designing the Overture’s complex engine, dispelling the common myth that hardware startups are money pits and much much more.
+
+PLUS we’ve got two brand new companies entering our Gamma Pitch Deck Competition. Time to see how they stack up to our first impressive entrant, Where2Wheel. 
+
+Timestamps:
+
+(02:22) Introducing Blake Scholl from Boom Supersonic
+
+(04:03) How Boom is improving on the classic Concorde experience
+
+(08:29) How hyper-fast Overture flights could change passenger behavior
+
+( …",11842,20,1,PT1H5M3S
+2025-09-30T22:16:12Z,Dwarkesh Patel,UCXl4i9dYBrFOabk0xGmbkRA,How WW2 Fixed WW1’s Communication Failures - Sarah Paine,https://www.youtube.com/watch?v=O6i3xBwYjJE,O6i3xBwYjJE,,146937,4835,109,PT58S
+2025-09-30T22:48:57Z,Acquired,UCyFqFYfTW2VoIQKylJ04Rtw,Can New Hires Lead Companies?,https://www.youtube.com/watch?v=ayeYguErhpg,ayeYguErhpg,"Can New Hires Lead Companies?
+
+#business #podcast #stevejobs #success
+
+Listen to the full ACQ2 episode 🎙️ How to Live in Everyone Else's Future (with Shopify CEO Tobi Lütke)",2980,82,0,PT45S
+2025-09-30T23:55:43Z,This Week in Startups,UCkkhmBWfS7pILYIk0izkc3A,Tai Lopez accused of $100 MILLION Ponzi Scheme...,https://www.youtube.com/watch?v=fSrbJc2qePU,fSrbJc2qePU,"Follow Alex:
+X: https://x.com/alex
+LinkedIn: ⁠https://www.linkedin.com/in/alexwilhelm
+
+Follow Jason:
+X: https://twitter.com/Jason
+LinkedIn: https://www.linkedin.com/in/jasoncalacanis
+
+Subscribe to This Week in Startups for full episodes: https://www.youtube.com/channel/UCkkhmBWfS7pILYIk0izkc3A?sub_confirmation=1
+
+Subscribe to Subscribe to This Week in Startups Clips for clips!
+https://www.youtube.com/channel/UCS7tJlcUA6PzVHEMo-X7ddg?sub_confirmation=1
+
+#startups #podcast #tech",959,27,0,PT1M57S
+2025-10-01T00:44:01Z,All-In Podcast,UCESLZhusAkFfsNsApnjF_Cg,"Rick Caruso on California’s Collapse: Broken Leadership, LA Wildfire Failures & the Fix",https://www.youtube.com/watch?v=G2KvA4QD-IY,G2KvA4QD-IY,"(0:00) Introducing Rick Caruso
+(1:03) Reflecting on the disastrous LA Wildfires: Karen Bass failure, saving the Palisades Village, failure to rebuild
+(11:20) California’s incompetence, running for CA Governor vs LA Mayor
+(14:21) Attention to detail
+(17:04) State of California: What it should be, homelessness, National Guard, policing
+
+Thanks to our partners for making this happen!
+
+Solana - Solana is the high performance network powering internet capital markets, payments, and crypto applications. Connect with investors, crypto founders, and entrepreneurs at Solana’s global flagship event during Abu Dhabi Finance Week & F1: https://solana.com/breakpoint
+
+OKX - The new way to build your crypto portfolio and use it in daily life. We call it the new money app. https://www.okx.com/
+
+Google Cloud - The next generation of unicorns is building on Google Cloud's industry-leading, fully integrated AI stack: infrastructure, platform, models, agents, and data. https://cloud.google.com/
+
+IREN - IR …",12135,627,39,PT22M56S
